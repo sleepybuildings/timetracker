@@ -7,9 +7,13 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="CommandLineParser" Version="2.3.0" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="0001-1-1.json" />
     <None Remove="2018-9-17.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\Commands\" />
   </ItemGroup>
 </Project>

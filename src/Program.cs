@@ -1,5 +1,7 @@
 ﻿using System;
 using Timetracker.Tracker;
+using Timetracker.src.Commands;
+using CommandLine;
 
 namespace Timetracker
 {
@@ -8,26 +10,13 @@ namespace Timetracker
 
 		static void Main(string[] args)
 		{
-			var tracker = new Store().BuildTracker(DateTime.Now);
-
-			try
-			{
-				
-				Job prev = null;
-
-				prev = tracker.Push("job 1");
-				Console.WriteLine("Starting 1, ending " + (prev == null ? "none" : prev.Name));
-
-				prev = tracker.Push("job 2");
-				Console.WriteLine("Starting 2, ending " + (prev == null ? "none" : prev.Name));
-
-				tracker.End();
-
-
-			} finally 
-			{
-				new Store().StoreTracker(tracker);
-			}
+			CommandLine.Parser.Default.ParseArguments<StartJobCommand, EndJobCommand, ListJobsCommand>(args)
+					   .MapResult(
+				           (StartJobCommand cmd) => cmd.Run(),
+				           (EndJobCommand cmd) => cmd.Run(),
+			               (ListJobsCommand cmd) => cmd.Run(),
+				           _ => 1
+				          );
 		}
 	}
 }

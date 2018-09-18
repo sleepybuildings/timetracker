@@ -19,9 +19,9 @@ namespace Timetracker.Tracker
 
 
 
-		public Tracker(DateTime dateTime)
+		public Tracker(DateTime date)
 		{
-			this.Date = dateTime;
+			Date = date;
 		}
 
 

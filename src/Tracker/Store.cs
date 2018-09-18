@@ -10,7 +10,7 @@ namespace Timetracker.Tracker
 
 		/// <summary>
 		/// Loads a tracker instance from file. Creates a new tracker if the instance is not found.
-		/// </summary>
+		/// </summaxry>
 		public Tracker BuildTracker(DateTime dateTime)
 		{
 			Tracker tracker = null;
@@ -19,7 +19,7 @@ namespace Timetracker.Tracker
 			if(File.Exists(filename))
 				tracker = Deserialize(filename);
 
-			return tracker ?? new Tracker(dateTime);
+			return tracker ?? new Tracker(DateTime.Now);
 		}
 
 

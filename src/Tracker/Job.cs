@@ -31,6 +31,19 @@ namespace Timetracker.Tracker
 		}
 
 
+
+		/// <summary>
+		/// Counts the duration of this job
+		/// </summary>
+		public TimeSpan GetDuration()
+		{
+			TimeSpan result = new TimeSpan();
+			logs.ForEach(log => result += (log.End.HasValue? log.End.Value : DateTime.Now) - log.Begin);
+
+			return result;
+		}
+
+
 		/// <summary>
 		/// Ends a running log
 		/// </summary>
