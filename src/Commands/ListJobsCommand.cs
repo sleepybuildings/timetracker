@@ -14,7 +14,7 @@ namespace Timetracker.src.Commands
 	{
 		public override int RunTrackerCommand()
 		{
-			Console.WriteLine(" Timespan      Job");
+			Console.WriteLine(" Timespan     Job");
 			Console.WriteLine(new String((char)0x2550, 70));
 
 			TimeSpan total = new TimeSpan();

@@ -9,7 +9,7 @@ Each job will the stored in a daily JSON file.
 | Argument     | What is does                       | 
 |--------------|------------------------------------|
 | start <name> | Start a new job                    |
-| stop         | Stops the current job              |
+| end          | Stops the current job              |
 | pop          | Stops and resumés the previous job |
 | list         | Summary of jobs                    |
 
