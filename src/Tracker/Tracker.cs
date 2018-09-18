@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Linq;
 using Newtonsoft.Json;
+using System.Threading.Tasks.Dataflow;
 
 namespace Timetracker.Tracker
 {
@@ -51,6 +52,47 @@ namespace Timetracker.Tracker
 
 
 		/// <summary>
+		/// Stops the current job and resume the previous
+		/// </summary>
+		public (Job poppedJob, Job startedJob) Pop()
+		{
+			Job startedJob = null;
+
+			var poppedJob = CurrentJob;
+			if(poppedJob != null)
+			{
+				startedJob = FindPrecedingJob(poppedJob);
+
+				if(startedJob != null)
+					Push(startedJob.Name);
+			}
+
+			return (poppedJob, startedJob);
+		}
+
+
+		/// <summary>
+		/// Find the job which ended before the given job
+		/// </summary>
+		private Job FindPrecedingJob(Job job)
+		{
+			var activeLog = job.ActiveLog;
+			if(activeLog == null)
+				return null;
+
+			var jobStarted = activeLog.Begin;
+
+			return jobs.Where(j => j.Name != job.Name)
+					   .Where(j => j.OldestEntry.End <= activeLog.Begin)
+				       .OrderByDescending(j => j.OldestEntry.End)
+					   .FirstOrDefault();
+		}
+
+
+		private Job CurrentJob => jobs.Where(j => j.IsActive).FirstOrDefault();
+
+
+		/// <summary>
 		/// Find a job with the specified name.
 		/// </summary>
 		public Job Find(string name)
@@ -68,7 +110,7 @@ namespace Timetracker.Tracker
 			if(jobs.Count < 1)
 				return null;
 
-			var currentJob = jobs.Where(j => j.IsActive).FirstOrDefault();
+			var currentJob = CurrentJob;
 
 			currentJob?.End();
 

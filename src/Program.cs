@@ -10,11 +10,12 @@ namespace Timetracker
 
 		static void Main(string[] args)
 		{
-			CommandLine.Parser.Default.ParseArguments<StartJobCommand, EndJobCommand, ListJobsCommand>(args)
+			CommandLine.Parser.Default.ParseArguments<StartJobCommand, EndJobCommand, ListJobsCommand, PopJobsCommand>(args)
 					   .MapResult(
 				           (StartJobCommand cmd) => cmd.Run(),
 				           (EndJobCommand cmd) => cmd.Run(),
 			               (ListJobsCommand cmd) => cmd.Run(),
+				           (PopJobsCommand cmd) => cmd.Run(),
 				           _ => 1
 				          );
 		}

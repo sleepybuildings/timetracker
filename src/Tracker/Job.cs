@@ -44,6 +44,9 @@ namespace Timetracker.Tracker
 		}
 
 
+		public Log OldestEntry => logs.OrderBy(l => l.End ?? DateTime.Now).First();
+
+
 		/// <summary>
 		/// Ends a running log
 		/// </summary>
@@ -54,6 +57,9 @@ namespace Timetracker.Tracker
 		/// True when this job is running
 		/// </summary>
 		public bool IsActive => logs.Where(l => l.End == null).Count() > 0;
+
+
+		public Log ActiveLog => logs.Where(l => l.End == null).FirstOrDefault();
 
 	}
 }
