@@ -29,3 +29,12 @@ Use at your own risk
 - .NET Core 2.1
 - CommandLineParser 2.3
 - Newtonsoft.Json 11
+
+## .Net
+
+Build release:
+
+`dotnet publish -c Release`
+
+
+

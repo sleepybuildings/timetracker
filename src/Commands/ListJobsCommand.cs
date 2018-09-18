@@ -31,10 +31,7 @@ namespace Timetracker.src.Commands
 			});
 
 			Console.WriteLine(new String((char)0x2550, 70));
-			Console.WriteLine("{0,2} u {1,2} m",
-				  total.Hours,
-			      total.Minutes
-			);
+			Console.WriteLine("{0,2} u {1,2} m", total.Hours,total.Minutes);
 
 			return 0;
 		}

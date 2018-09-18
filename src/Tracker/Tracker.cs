@@ -19,7 +19,6 @@ namespace Timetracker.Tracker
 		public DateTime Date { get; private set; }
 
 
-
 		public Tracker(DateTime date)
 		{
 			Date = date;
@@ -83,9 +82,9 @@ namespace Timetracker.Tracker
 			var jobStarted = activeLog.Begin;
 
 			return jobs.Where(j => j.Name != job.Name)
-					   .Where(j => j.OldestEntry.End <= activeLog.Begin)
+				       .Where(j => j.OldestEntry.End <= activeLog.Begin)
 				       .OrderByDescending(j => j.OldestEntry.End)
-					   .FirstOrDefault();
+				       .FirstOrDefault();
 		}
 
 
@@ -99,7 +98,6 @@ namespace Timetracker.Tracker
 		{
 			return jobs.Where(j => j.Name == name).FirstOrDefault();
 		}
-
 
 
 		/// <summary>

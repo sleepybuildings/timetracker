@@ -1,0 +1,2 @@
+#!/bin/zsh
+dotnet ./bin/Release/netcoreapp2.1/Timetracker.dll "$@"
