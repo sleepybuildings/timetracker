@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Schema;
 
 namespace Timetracker.Tracker
 {
@@ -32,7 +31,6 @@ namespace Timetracker.Tracker
 		}
 
 
-
 		/// <summary>
 		/// Counts the duration of this job
 		/// </summary>
@@ -45,12 +43,15 @@ namespace Timetracker.Tracker
 		}
 
 
-		public double GetDurationAsFloat()
-		{
-			return GetDuration().TotalMinutes / 60d;
-		}
+		/// <summary>
+		/// Returns the total duration as a double
+		/// </summary>
+		public double GetDurationAsFloat() => GetDuration().TotalMinutes / 60d;
 
 
+		/// <summary>
+		/// Returns the oldest log entry
+		/// </summary>
 		public Log OldestEntry => logs.OrderBy(l => l.End ?? DateTime.Now).First();
 
 
@@ -66,6 +67,9 @@ namespace Timetracker.Tracker
 		public bool IsActive => logs.Where(l => l.End == null).Count() > 0;
 
 
+		/// <summary>
+		/// Returns the active log entry
+		/// </summary>
 		public Log ActiveLog => logs.Where(l => l.End == null).FirstOrDefault();
 
 	}

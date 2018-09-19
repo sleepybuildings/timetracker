@@ -17,5 +17,6 @@
   <ItemGroup>
     <Folder Include="src\Commands\" />
     <Folder Include="src\Extensions\" />
+    <Folder Include="src\Contracts\" />
   </ItemGroup>
 </Project>

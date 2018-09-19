@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Timetracker.Commands
+namespace Timetracker.Contracts
 {
 	public interface Command
 	{

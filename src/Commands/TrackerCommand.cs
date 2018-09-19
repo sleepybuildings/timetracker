@@ -1,6 +1,9 @@
 ﻿using System;
 using Timetracker.Tracker;
 using Jobs = Timetracker.Tracker.Tracker;
+using Timetracker.Contracts;
+using Colorful;
+using System.Drawing;
 
 namespace Timetracker.Commands
 {
@@ -40,8 +43,13 @@ namespace Timetracker.Commands
 			try
 			{
 				return RunTrackerCommand();
-					
-			} finally 
+
+			} catch(Exception ex)
+			{
+				Colorful.Console.WriteLine("Oh no! Its an exception: " + ex.Message, Color.Red);
+				return 1;
+
+			} finally
 			{
 				StoreTracker();
 			}
