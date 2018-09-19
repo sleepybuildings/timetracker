@@ -8,6 +8,7 @@ using Colorful;
 using Timetracker.Tracker;
 using ColorConsole = Colorful.Console;
 using Console = System.Console;
+using Timetracker.Output;
 
 namespace Timetracker.Commands
 {
@@ -37,76 +38,74 @@ namespace Timetracker.Commands
 			if(Selector == "prev")
 				Date = DateTime.Now.AddDays(-1);
 			
-			// Print the date
+			var table = BuildTable();
 
 			if(Date.SameDay(DateTime.Now))
-				Console.WriteLine(" Summary of today");
+				table.Caption = "Summary of today";
 			else
-				Console.WriteLine(" Summary of {0}-{1}-{2}",
-				                  Date.Day.ToString().PadLeft(2, '0'),
-								  Date.Month.ToString().PadLeft(2, '0'),
-								  Date.Year
-								 );
+				table.Caption = string.Format(
+					"Summary of {0}-{1}-{2}",
+					Date.Day.ToString().PadLeft(2, '0'),
+					Date.Month.ToString().PadLeft(2, '0'),
+					Date.Year
+				);
 			
-			Console.WriteLine(string.Empty);
 
 			// Summary table
 
-			Console.WriteLine(" Timespan            Job");
-			Console.WriteLine(new String((char)0x2550, 70));
+			Console.WriteLine(string.Empty);
 
-			TimeSpan total = new TimeSpan();
+			foreach(var row in table.Generate())
+				Console.WriteLine(row);
 
-			if(!Tracker.jobs.Any())
-			{
-				Console.WriteLine(string.Empty);
-				ColorConsole.WriteLine("   There is only emptiness", Color.Silver);
-				Console.WriteLine(string.Empty);
-
-			} else {
-			 
-				total = PrintSummary();
-			}
-
-			// Footer
-
-			Console.WriteLine(new String((char)0x2550, 70));
-
-			if(Tracker.jobs.Any())
-			{
-				Console.WriteLine("{0,2} u {1,2} m", total.Hours, total.Minutes);
-				Console.WriteLine(string.Empty);
-			}
+			Console.WriteLine(string.Empty);
 
 			return 0;
 		}
 
 
-		TimeSpan PrintSummary()
+		TableGenerator BuildTable()
 		{
 			TimeSpan total = new TimeSpan();
+			double totalNum = 0d;
 
-			var alternator = new ColorAlternatorFactory().GetAlternator(1, Color.Red, Color.Green);
-
-			Tracker.jobs.ForEach((job) =>
+			var table = new TableGenerator()
 			{
-				var duration = job.GetDuration();
-				total += duration;
-				ColorConsole.WriteLineAlternating(FormatTableRow(job, duration), alternator);
-			});
+				CellPadding = 2,
+				ContainsHeader = true,
+				ContainsFooter = Tracker.jobs.Any(),
+			};
 
-			return total;
+			table.AddRow("Time", "", "Job");
+
+			if(Tracker.jobs.Any())
+			{
+				Tracker.jobs.ForEach((job) =>
+				{
+					var duration = job.GetDuration();
+					var durationNum = job.GetDurationAsFloat();
+
+					totalNum += durationNum;
+					total += duration;
+
+					table.AddRow(
+						FormatTime(duration),
+						string.Format("{0:0.00}", durationNum),
+						job.Name + (job.IsActive ? " ← Current Job" : string.Empty)
+					);
+				});
+
+				table.AddRow(FormatTime(total), string.Format("{0:0.00}", totalNum));
+
+			} else {
+				table.AddRow("There is only emptiness");
+			}
+
+			return table;
 		}
 
+		string FormatTime(TimeSpan duration) 
+			=> string.Format("{0}:{1,2}", duration.Hours, duration.Minutes.ToString().PadLeft(2, '0'));
 
-		string FormatTableRow(Job job, TimeSpan duration)
-		{
-			return string.Format("{0,2} u {1,2} m    {2:0.00}    {3}",
-								  duration.Hours,
-								  duration.Minutes,
-			                      job.GetDurationAsFloat(),
-			                      job.Name + (job.IsActive ? " ← Current Job" : "")
-								);
-		}
 	}
 }

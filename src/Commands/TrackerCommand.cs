@@ -46,6 +46,7 @@ namespace Timetracker.Commands
 
 			} catch(Exception ex)
 			{
+				//throw;
 				Colorful.Console.WriteLine("Oh no! Its an exception: " + ex.Message, Color.Red);
 				return 1;
 
