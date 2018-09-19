@@ -15,5 +15,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="src\Commands\" />
+    <Folder Include="src\Extensions\" />
   </ItemGroup>
 </Project>

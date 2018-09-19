@@ -6,8 +6,8 @@ namespace Timetracker.src.Commands
 {
 	abstract public class TrackerCommand: Command
 	{
-
-		private DateTime? dateTime;
+		
+		virtual protected DateTime? dateTime { get; set; }
 
 		public DateTime DateTime
 		{
@@ -21,7 +21,7 @@ namespace Timetracker.src.Commands
 		}
 
 
-		private Jobs tracker;
+		protected Jobs tracker;
 
 		protected Jobs Tracker 
 		{

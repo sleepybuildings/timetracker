@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Schema;
 
 namespace Timetracker.Tracker
 {
@@ -41,6 +42,12 @@ namespace Timetracker.Tracker
 			logs.ForEach(log => result += (log.End.HasValue? log.End.Value : DateTime.Now) - log.Begin);
 
 			return result;
+		}
+
+
+		public double GetDurationAsFloat()
+		{
+			return GetDuration().TotalSeconds / 60d;
 		}
 
 
