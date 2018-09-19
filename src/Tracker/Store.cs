@@ -19,7 +19,7 @@ namespace Timetracker.Tracker
 			if(File.Exists(filename))
 				tracker = Deserialize(filename);
 
-			return tracker ?? new Tracker(DateTime.Now);
+			return tracker ?? new Tracker(dateTime);
 		}
 
 
