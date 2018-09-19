@@ -1,7 +1,7 @@
 ﻿using System;
 using CommandLine;
 
-namespace Timetracker.src.Commands
+namespace Timetracker.Commands
 {
 
 	[VerbAttribute(

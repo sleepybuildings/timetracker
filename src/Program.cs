@@ -1,6 +1,6 @@
 ﻿using System;
 using Timetracker.Tracker;
-using Timetracker.src.Commands;
+using Timetracker.Commands;
 using CommandLine;
 
 namespace Timetracker

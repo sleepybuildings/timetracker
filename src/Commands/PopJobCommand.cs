@@ -3,7 +3,7 @@ using CommandLine;
 using System.Collections.Generic;
 using Timetracker.Tracker;
 
-namespace Timetracker.src.Commands
+namespace Timetracker.Commands
 {
 
 	[VerbAttribute(

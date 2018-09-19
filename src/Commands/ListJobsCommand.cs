@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Timetracker.Extensions;
 using System.Linq;
 
-namespace Timetracker.src.Commands
+namespace Timetracker.Commands
 {
 
 	[VerbAttribute(

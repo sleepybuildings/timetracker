@@ -1,11 +1,11 @@
 ﻿using System;
-namespace Timetracker.src.Commands
+
+namespace Timetracker.Commands
 {
-	abstract public class Command
+	public interface Command
 	{
-
-		abstract public int Run();
-
+		
+		int Run();
 
 	}
 }

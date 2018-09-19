@@ -2,7 +2,7 @@
 using Timetracker.Tracker;
 using Jobs = Timetracker.Tracker.Tracker;
 
-namespace Timetracker.src.Commands
+namespace Timetracker.Commands
 {
 	abstract public class TrackerCommand: Command
 	{
@@ -35,7 +35,7 @@ namespace Timetracker.src.Commands
 		}
 
 
-		public override int Run()
+		public int Run()
 		{
 			try
 			{
