@@ -34,15 +34,17 @@ namespace Timetracker.Tracker
 
 		private string GetStorageDirectory()
 		{
-			// Todo: find a suitable storage directory
-			return "./";
+			var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "timetracker");
+			if(!File.Exists(path))
+				Directory.CreateDirectory(path);
+
+			return path;
 		}
 
 
 		private string GetFilename(DateTime dateTime)
 		{
-			// Todo: make more locale friendly
-			return GetStorageDirectory() + dateTime.ToString("yyyy-M-d") + ".json";
+			return Path.Combine(GetStorageDirectory(), dateTime.ToString("yyyy-M-d") + ".json");
 		}
 
 
