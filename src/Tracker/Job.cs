@@ -47,7 +47,7 @@ namespace Timetracker.Tracker
 
 		public double GetDurationAsFloat()
 		{
-			return GetDuration().TotalSeconds / 60d;
+			return GetDuration().TotalMinutes / 60d;
 		}
 
 

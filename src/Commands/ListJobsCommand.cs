@@ -3,6 +3,11 @@ using CommandLine;
 using System.Collections.Generic;
 using Timetracker.Extensions;
 using System.Linq;
+using System.Drawing;
+using Colorful;
+using Timetracker.Tracker;
+using ColorConsole = Colorful.Console;
+using Console = System.Console;
 
 namespace Timetracker.Commands
 {
@@ -42,40 +47,66 @@ namespace Timetracker.Commands
 								  Date.Month.ToString().PadLeft(2, '0'),
 								  Date.Year
 								 );
+			
+			Console.WriteLine(string.Empty);
 
 			// Summary table
 
-			Console.WriteLine(" Timespan     Job");
+			Console.WriteLine(" Timespan            Job");
 			Console.WriteLine(new String((char)0x2550, 70));
 
 			TimeSpan total = new TimeSpan();
 
 			if(!Tracker.jobs.Any())
 			{
-				Console.WriteLine("");
-				Console.WriteLine("   There is only emptiness");
-				Console.WriteLine("");
+				Console.WriteLine(string.Empty);
+				ColorConsole.WriteLine("   There is only emptiness", Color.Silver);
+				Console.WriteLine(string.Empty);
 
 			} else {
-
-				Tracker.jobs.ForEach((job) =>
-				{
-					var duration = job.GetDuration();
-					total += duration;
-					Console.WriteLine("{0,2} u {1,2} m     {2}",
-									  duration.Hours,
-									  duration.Minutes,
-									  job.Name + (job.IsActive ? " (Still active)" : "")
-									 );
-				});
+			 
+				total = PrintSummary();
 			}
 
 			// Footer
 
 			Console.WriteLine(new String((char)0x2550, 70));
-			Console.WriteLine("{0,2} u {1,2} m", total.Hours,total.Minutes);
+
+			if(Tracker.jobs.Any())
+			{
+				Console.WriteLine("{0,2} u {1,2} m", total.Hours, total.Minutes);
+				Console.WriteLine(string.Empty);
+			}
 
 			return 0;
+		}
+
+
+		TimeSpan PrintSummary()
+		{
+			TimeSpan total = new TimeSpan();
+
+			var alternator = new ColorAlternatorFactory().GetAlternator(1, Color.Red, Color.Green);
+
+			Tracker.jobs.ForEach((job) =>
+			{
+				var duration = job.GetDuration();
+				total += duration;
+				ColorConsole.WriteLineAlternating(FormatTableRow(job, duration), alternator);
+			});
+
+			return total;
+		}
+
+
+		string FormatTableRow(Job job, TimeSpan duration)
+		{
+			return string.Format("{0,2} u {1,2} m    {2:0.00}    {3}",
+								  duration.Hours,
+								  duration.Minutes,
+			                      job.GetDurationAsFloat(),
+			                      job.Name + (job.IsActive ? " ← Current Job" : "")
+								);
 		}
 	}
 }
