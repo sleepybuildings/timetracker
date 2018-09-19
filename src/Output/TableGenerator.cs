@@ -27,6 +27,10 @@ namespace Timetracker.Output
 		private readonly char CornerBottomLeft = (char)0x2517;
 		private readonly char CornerBottomRight = (char)0x251B;
 
+		private readonly char ShadowBottom =  (char)0x2588 ;//(char)0x2588;
+		private readonly char ShadowRight = (char)0x2588;
+
+		public bool AddShadow { get; set; } = false;
 		public bool ContainsHeader { get; set; } = true;
 		public bool ContainsFooter { get; set; } = false;
 		public int CellPadding { get; set; } = 2;
@@ -57,26 +61,41 @@ namespace Timetracker.Output
 		}
 
 
-		private string DrawHorizonalLine(int length, LineType type)
+		private string DrawBottomShadow(int length, int offset = 2)
 		{
+			return "".PadLeft(offset) + new String(ShadowBottom, length + 2);
+		}
+
+
+		private string DrawHorizonalLine(int length, LineType type, bool withShadow)
+		{
+			string result;
+			
 			switch(type)
 			{
 				case LineType.TopLine:
-					return DrawHorizonalLineWithEndings(length, RowSeparator, CornerTopLeft, CornerTopRight);
+					result = DrawHorizonalLineWithEndings(length, RowSeparator, CornerTopLeft, CornerTopRight);
+					break;
 
 				case LineType.BottomLine:
-					return DrawHorizonalLineWithEndings(length, RowSeparator, CornerBottomLeft, CornerBottomRight);
+					result = DrawHorizonalLineWithEndings(length, RowSeparator, CornerBottomLeft, CornerBottomRight);
+					break;
 
 				default:
-					return DrawHorizonalLineWithEndings(length, RowSeparator, LeftRight, RightLeft);
+					result = DrawHorizonalLineWithEndings(length, RowSeparator, LeftRight, RightLeft);
+					break;
 			}
+
+			if(withShadow)
+				result += ShadowRight + "" + ShadowRight;
+
+			return result;
 		}
 
 
 		private string DrawHorizonalLineWithEndings(int length, char line, char left, char right)
 		{
 			return left + new String(line, length - 2 + CellPadding) + right;
-
 		}
 
 
@@ -91,21 +110,24 @@ namespace Timetracker.Output
 				result.Add("");
 			}
 
-			result.Add(DrawHorizonalLine(width, LineType.TopLine));
+			result.Add(DrawHorizonalLine(width, LineType.TopLine, false));
 
 			var rows = Rows.Count();
 			for(var index = 0; index < rows; index++)
 			{
 				if(ContainsFooter && index == rows - 1)
-					result.Add(DrawHorizonalLine(width, LineType.SingleLine));
+					result.Add(DrawHorizonalLine(width, LineType.SingleLine, AddShadow));
 
-				result.Add(BuildRow(Rows[index]));
+				result.Add(BuildRow(Rows[index], AddShadow));
 
 				if(ContainsHeader && index == 0)
-					result.Add(DrawHorizonalLine(width, LineType.SingleLine));
+					result.Add(DrawHorizonalLine(width, LineType.SingleLine, AddShadow));
 			}
 
-			result.Add(DrawHorizonalLine(width, LineType.BottomLine));
+			result.Add(DrawHorizonalLine(width, LineType.BottomLine, AddShadow));
+
+			if(AddShadow)
+				result.Add(DrawBottomShadow(width));
 
 			return result;
 		}
@@ -129,7 +151,7 @@ namespace Timetracker.Output
 		}
 
 
-		private string BuildRow(string[] row)
+		private string BuildRow(string[] row, bool withShadow)
 		{
 			string result = "" + ColumnSeparator;
 			string padding = new String(' ', CellPadding);
@@ -153,7 +175,12 @@ namespace Timetracker.Output
 				 	result += padding;
 			}
 
-			return result + ColumnSeparator;
+			result += ColumnSeparator;
+
+			if(withShadow)
+				result += ShadowRight + "" + ShadowRight;
+
+			return result;
 		}
 
 
